@@ -4,7 +4,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
-internal class Grind20Test {
+internal class Grind020Test {
     @Test
     fun twoSumTest() {
         assertContentEquals(intArrayOf(0,1), twoSum(intArrayOf(2,7,11,15), 9))

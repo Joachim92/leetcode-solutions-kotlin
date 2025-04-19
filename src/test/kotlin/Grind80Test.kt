@@ -1,2 +1,0 @@
-class Grind80Test {
-}
