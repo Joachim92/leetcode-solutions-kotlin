@@ -1,0 +1,2 @@
+class Grind60Test {
+}
