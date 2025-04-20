@@ -1,3 +1,6 @@
+import kotlin.math.abs
+import kotlin.math.max
+
 /**
  * #81  Task Scheduler
  */
@@ -65,6 +68,37 @@
 /**
  * #97  Longest Increasing Subsequence
  */
+fun lengthOfLIS(nums: IntArray): Int {
+    val sub = mutableListOf<Int>()
+
+    sub.add(nums[0])
+
+    for (i in 1 until nums.size) {
+        if (sub.last() < nums[i]) {
+            sub.add(nums[i])
+        } else {
+            val searchResult = sub.binarySearch(nums[i])
+            val index = if (searchResult >= 0) searchResult else -searchResult - 1
+            sub[index] = nums[i]
+        }
+    }
+
+    return sub.size
+}
+
+fun lengthOfLISDP(nums: IntArray): Int { // O(n^2)
+    val dp = IntArray(nums.size) { 1 }
+
+    for (i in 1 until nums.size) {
+        for (j in i-1 downTo 0) {
+            if (nums[i] > nums[j]) {
+                dp[i] = max(dp[i], dp[j] + 1)
+            }
+        }
+    }
+
+    return dp.maxOrNull() ?: 1
+}
 
 /**
  * #98  Graph Valid Tree

@@ -4,7 +4,69 @@
 
 /**
  * #102  Longest Consecutive Sequence
+ *
+ * Example 1:
+ *
+ * Input: nums = [100,4,200,1,3,2]
+ * Output: 4
+ * Explanation: The longest consecutive elements sequence is [1, 2, 3, 4]. Therefore its length is 4.
+ * Example 2:
+ *
+ * Input: nums = [0,3,7,2,5,8,4,6,0,1]
+ * Output: 9
+ * Example 3:
+ *
+ * Input: nums = [1,0,1,2]
+ * Output: 3
+ *
+ *
+ * Constraints:
+ *
+ * 0 <= nums.length <= 105
+ * -109 <= nums[i] <= 109
+ *
+ * [] size 109 * 2 + 1
+ *
+ * min = null | 0
+ * max = null | 2
+ * {1,0,2}
+ *
+ * set = {1,0,2}
+ *
+ * traverse set
+ *  if there is no number exactly one position prior to this one, this is the start of a sequence
+ *      length = 1
+ *  else
+ *      length += 1
+ *
+ * [1,0,2]
  */
+fun longestConsecutive(nums: IntArray): Int { // O(n)
+    fun isBeginningOfASequence(num: Int, numSet: Set<Int>): Boolean {
+        return (num - 1) !in numSet
+    }
+
+    if (nums.isEmpty()) return 0
+
+    val numSet = nums.toSet()
+    var longestStreak = 0
+
+    for (num in numSet) {
+        if (isBeginningOfASequence(num, numSet)) {
+            var currentNum = num
+            var currentStreak = 1
+
+            while ((currentNum + 1) in numSet) {
+                currentNum++
+                currentStreak++
+            }
+
+            longestStreak = maxOf(longestStreak, currentStreak)
+        }
+    }
+
+    return longestStreak
+}
 
 /**
  * #103  Rotate Array
