@@ -1,6 +1,67 @@
 import java.util.*
 import kotlin.math.*
 
+class TreeNode(var `val`: Int) {
+    var left: TreeNode? = null
+    var right: TreeNode? = null
+
+    override fun toString(): String {
+        if (left != null && right != null) {
+            return "TN={value:${`val`}, left:${left}, right:${right}}"
+        }
+        if (left != null) {
+            return "TN={value:${`val`}, left:${left}}"
+        }
+        if (right != null) {
+            return "TN={value:${`val`}, right:${right}}"
+        }
+        return "TN={value:${`val`}}"
+    }
+}
+
+class ListNode(var `val`: Int) {
+    var next: ListNode? = null
+
+    override fun toString(): String {
+        return "LN={val:${`val`}, next:${next}}"
+    }
+
+    fun toIntArray(): IntArray {
+        val li = mutableListOf<Int>()
+        var current: ListNode? = this
+        while (current != null) {
+            li.add(current.`val`)
+            current = current.next
+        }
+        return li.toIntArray()
+    }
+}
+data class Node(val `val`: Int, val neighbors: MutableList<Node?> = mutableListOf())
+data class TextNode(val `val`: String, val neighbors: MutableList<TextNode> = mutableListOf()) {
+    override fun toString(): String {
+        return "TN(${`val`})"
+//        return toString(mutableSetOf())
+    }
+
+    override fun hashCode(): Int {
+        return this.`val`[0].code
+    }
+
+    private fun toString(visited: MutableSet<TextNode>): String {
+        if (this in visited) {
+            return "finish"
+        }
+        visited.add(this)
+        var text = "TN(val: ${`val`}, neighbors: ["
+        for (neighbor in neighbors) {
+            text += "${neighbor.toString(visited)},"
+        }
+        text += "])"
+        return text
+    }
+}
+
+class TrieNode(val value: String, val adjacents: HashMap<Char, TrieNode>, var isWord: Boolean)
 
 fun main(args: Array<String>) {
     println(args)
@@ -101,42 +162,6 @@ fun generateMatrix(n: Int): Array<IntArray> {
         }
     }
     return matrix
-}
-
-class TreeNode(var `val`: Int) {
-    var left: TreeNode? = null
-    var right: TreeNode? = null
-
-    override fun toString(): String {
-        if (left != null && right != null) {
-            return "TN={value:${`val`}, left:${left}, right:${right}}"
-        }
-        if (left != null) {
-            return "TN={value:${`val`}, left:${left}}"
-        }
-        if (right != null) {
-            return "TN={value:${`val`}, right:${right}}"
-        }
-        return "TN={value:${`val`}}"
-    }
-}
-
-class ListNode(var `val`: Int) {
-    var next: ListNode? = null
-
-    override fun toString(): String {
-        return "LN={val:${`val`}, next:${next}}"
-    }
-
-    fun toIntArray(): IntArray {
-        val li = mutableListOf<Int>()
-        var current: ListNode? = this
-        while (current != null) {
-            li.add(current.`val`)
-            current = current.next
-        }
-        return li.toIntArray()
-    }
 }
 
 /**
@@ -271,7 +296,7 @@ fun dfs(node: Int, graph: Array<ArrayList<Int>>, visited: HashSet<Int>) {
 }
 
 fun hasCycles(graph: Array<ArrayList<Int>>): Boolean {
-    val visited = HashSet<Int>()
+    val visited = mutableSetOf<Int>()
     for (node in graph.indices) {
         if (node !in visited) {
             if (cyclesDFS(node, null, graph, visited)) {
@@ -282,7 +307,7 @@ fun hasCycles(graph: Array<ArrayList<Int>>): Boolean {
     return false
 }
 
-fun cyclesDFS(node: Int, parent: Int?, graph: Array<ArrayList<Int>>, visited: HashSet<Int>): Boolean {
+fun cyclesDFS(node: Int, parent: Int?, graph: Array<ArrayList<Int>>, visited: MutableSet<Int>): Boolean {
     visited.add(node)
     for(adj in graph[node]) {
         if (adj !in visited) {
@@ -888,8 +913,6 @@ fun minCostClimbingStairs(cost: IntArray): Int {
     return minCost[minCost.size-1]
 }
 
-class TrieNode(val value: String, val adjacents: HashMap<Char, TrieNode>, var isWord: Boolean)
-
 fun replaceWords(dictionary: List<String>, sentence: String): String {
     val out = StringBuilder()
     val trie = TrieNode("", HashMap<Char, TrieNode>(), false)
@@ -1072,13 +1095,6 @@ fun levelOrder2(root: TreeNode?): List<List<Int>> {
     return out
 }
 
-data class Node(val `val`: Int) {
-    var neighbors: ArrayList<Node?> = ArrayList<Node?>()
-}
-
-/**
- *
- */
 fun cloneGraph(node: Node?): Node? {
     val visited = HashSet<Node>()
     val relations = HashMap<Node, Node>()

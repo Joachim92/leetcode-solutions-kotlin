@@ -1,4 +1,5 @@
 import java.lang.Exception
+import java.util.PriorityQueue
 import kotlin.math.abs
 
 /**
@@ -367,7 +368,45 @@ fun subarraySum(nums: IntArray, k: Int): Int {
 /**
  * #119  Random Pick with Weight
  */
+data class RandomPickSolution(val w: IntArray) {
+    private val weightsTotal = w.sum()
+    private val prefixWeights = IntArray(w.size)
+    init {
+        for ((i, weight) in w.withIndex()) {
+            prefixWeights[i] = if (i > 0) prefixWeights[i-1] + weight else weight
+        }
+    }
+
+    fun pickIndex(): Int {
+        val rand = (Math.random() * this.weightsTotal).toInt()
+        var left = 0
+        var right = prefixWeights.lastIndex
+
+        while (left < right) {
+            val mid = (right + left) / 2
+            if (rand < prefixWeights[mid]) {
+                right = mid
+            } else {
+                left = mid + 1
+            }
+        }
+
+        return left
+    }
+}
 
 /**
  * #120  Kth Largest Element in an Array
  */
+fun findKthLargest(nums: IntArray, k: Int): Int {
+    val pq = PriorityQueue<Int>(k)
+
+    for (num in nums) {
+        pq.add(num)
+        if (pq.size > k) {
+            pq.remove()
+        }
+    }
+
+    return pq.peek()
+}

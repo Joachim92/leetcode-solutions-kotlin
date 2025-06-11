@@ -1,6 +1,43 @@
 /**
  * #141  Combination Sum IV
  */
+fun combinationSum4(nums: IntArray, target: Int): Int { // DP
+    val dp = IntArray(target+1)
+    dp[0] = 1
+
+    for (i in 1 .. target) {
+        for (num in nums) {
+            if (i - num > 0) {
+                dp[i] += dp[i-num]
+            }
+        }
+    }
+
+    return dp[dp.lastIndex]
+}
+
+//fun combinationSum4(nums: IntArray, target: Int): Int { // Recursion + Memoization
+//    val sortedNums = nums.sorted()
+//    val memo = mutableMapOf<Int, Int>()
+//
+//    fun recursive(n: Int): Int {
+//        if (n == 0) return 1
+//        if (n < sortedNums[0]) return 0
+//        if (n in memo) return memo[n]!!
+//
+//        var count = 0
+//
+//        for (num in sortedNums) {
+//            if (n - num < 0) break
+//            count += recursive(n - num)
+//        }
+//
+//        memo[n] = count
+//        return count
+//    }
+//
+//    return recursive(target)
+//}
 
 /**
  * #142  Insert Delete GetRandom O(1)
