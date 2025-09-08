@@ -1,5 +1,10 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
+// Latest Supports with my IntelliJ version
+// JDK 20
+// Gradle Not sure, currently using 8.3
+// Kotlin
+
 plugins {
     kotlin("jvm") version "1.6.10"
     id("org.jetbrains.dokka") version "1.9.10"
@@ -15,25 +20,13 @@ repositories {
 
 dependencies {
     testImplementation(kotlin("test"))
-    implementation(kotlin("stdlib-jdk8"))
+    implementation(kotlin("stdlib"))
 }
 
 tasks.test {
     useJUnitPlatform()
 }
 
-tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = "14"
-}
-
 application {
     mainClass.set("MainKt")
-}
-val compileKotlin: KotlinCompile by tasks
-compileKotlin.kotlinOptions {
-    jvmTarget = "1.8"
-}
-val compileTestKotlin: KotlinCompile by tasks
-compileTestKotlin.kotlinOptions {
-    jvmTarget = "1.8"
 }

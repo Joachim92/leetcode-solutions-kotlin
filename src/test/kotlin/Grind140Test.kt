@@ -1,6 +1,4 @@
-import com.sun.source.tree.Tree
 import org.junit.jupiter.api.Test
-import kotlin.math.exp
 import kotlin.test.assertEquals
 
 class Grind140Test {
@@ -104,5 +102,20 @@ class Grind140Test {
         root.right?.right = TreeNode(8)
 
         assertEquals(mutableListOf(1,4,7), distanceK(root, root.left, 2).sorted())
+    }
+
+    @Test
+    fun findMinTest() {
+        val nums = intArrayOf(4,5,6,7,0,1,2)
+        assertEquals(0, findMin(nums))
+
+        val nums2 = intArrayOf(3,4,5,1,2)
+        assertEquals(1, findMin(nums2))
+    }
+
+    @Test
+    fun calculate2() {
+        assertEquals(1, calculate2(" 3/2 "))
+        assertEquals(19, calculate2("4+3*5"))
     }
 }

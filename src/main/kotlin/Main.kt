@@ -516,58 +516,58 @@ fun highestRankedKItems(grid: Array<IntArray>, pricing: IntArray, start: IntArra
     return rankedKItems
 }
 
-fun minWindow(s: String, t: String): String {
-    var l = 0
-    var r = 0
-    var minWindStr = ""
-    val mapCharCount = HashMap<Char, IntArray>()
-    val mapCount = HashMap<Char, Int>()
-
-    for (c in t) {
-        mapCount[c] = (mapCount[c] ?: 0) + 1
-    }
-
-    for (c in t.toSet()) {
-        if (!mapCharCount.containsKey(c)) {
-            mapCharCount[c] = IntArray(s.length)
-        }
-        for (i in s.indices) {
-            if (s[i] == c) {
-                if (i == 0) {
-                    mapCharCount.getValue(c)[i] += 1
-                } else {
-                    mapCharCount.getValue(c)[i] = mapCharCount.getValue(c)[i-1] + 1
-                }
-            } else {
-                if (i != 0) {
-                    mapCharCount.getValue(c)[i] = mapCharCount.getValue(c)[i-1]
-                }
-            }
-        }
-    }
-
-    fun containsAllChars(): Boolean {
-        for ((c, countArray) in mapCharCount) {
-            val count = if (l-1 >= 0) countArray[r] - countArray[l-1] else countArray[r]
-            if (count < mapCount.getValue(c)) {
-                return false
-            }
-        }
-        return true
-    }
-
-    while (r < s.length && l <= r) {
-        val substr = s.substring(l..r)
-        if (containsAllChars()) {
-            minWindStr = if (minWindStr.isEmpty() || substr.length < minWindStr.length) substr else minWindStr
-            l++
-        } else {
-            r++
-        }
-    }
-
-    return minWindStr
-}
+//fun minWindow(s: String, t: String): String {
+//    var l = 0
+//    var r = 0
+//    var minWindStr = ""
+//    val mapCharCount = HashMap<Char, IntArray>()
+//    val mapCount = HashMap<Char, Int>()
+//
+//    for (c in t) {
+//        mapCount[c] = (mapCount[c] ?: 0) + 1
+//    }
+//
+//    for (c in t.toSet()) {
+//        if (!mapCharCount.containsKey(c)) {
+//            mapCharCount[c] = IntArray(s.length)
+//        }
+//        for (i in s.indices) {
+//            if (s[i] == c) {
+//                if (i == 0) {
+//                    mapCharCount.getValue(c)[i] += 1
+//                } else {
+//                    mapCharCount.getValue(c)[i] = mapCharCount.getValue(c)[i-1] + 1
+//                }
+//            } else {
+//                if (i != 0) {
+//                    mapCharCount.getValue(c)[i] = mapCharCount.getValue(c)[i-1]
+//                }
+//            }
+//        }
+//    }
+//
+//    fun containsAllChars(): Boolean {
+//        for ((c, countArray) in mapCharCount) {
+//            val count = if (l-1 >= 0) countArray[r] - countArray[l-1] else countArray[r]
+//            if (count < mapCount.getValue(c)) {
+//                return false
+//            }
+//        }
+//        return true
+//    }
+//
+//    while (r < s.length && l <= r) {
+//        val substr = s.substring(l..r)
+//        if (containsAllChars()) {
+//            minWindStr = if (minWindStr.isEmpty() || substr.length < minWindStr.length) substr else minWindStr
+//            l++
+//        } else {
+//            r++
+//        }
+//    }
+//
+//    return minWindStr
+//}
 
 enum class ClassColor {
     WHITE,

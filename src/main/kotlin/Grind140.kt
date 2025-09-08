@@ -462,12 +462,87 @@ fun rotateRight(head: ListNode?, k: Int): ListNode? {
 
 /**
  * #139  Find Minimum in Rotated Sorted Array
+ *
+ * [0 1 2 3 4 5 6 7]
+ *
+ * [5 6 7 0 1 2 3 4]
+ *
+ * find sorted parts using bsearch
+ * divide in two
+ * [5 6 7 0] [1 2 3 4]
+ *   NOT        Sorted
+ *
+ *   [5 6]  [7 0]
+ *   Sorted  NOT
+ *
+ *   [7] [0]
+ *
+ *   I just need to find the pivot
+ *
+ *   1 is it?
+ *      if both parts are sorted, this is pivot
+ *      if not, the pivot is in the not sorted part
+ *
+ *   Once I have the pivot, get the smallest of the first numbers of the parts
+ *
+ *   the pivot is the index in which the minimum number is
+ *
+ *   [4,5,6,7,0,1,2]
  */
+fun findMin(nums: IntArray): Int {
+    var l = 0
+    var r = nums.lastIndex
+
+    while (l < r) {
+        val mid = l + (r-l)/2
+        if (nums[mid] > nums[r]) {
+            l = mid+1
+        } else {
+            r = mid
+        }
+    }
+
+    return nums[l]
+}
 
 /**
  * #140  Basic Calculator II
  */
+enum class Op(val sign: Int) {
+    Add(1),
+    Rest(-1)
+}
+fun calculate2(s: String): Int {
+    var currentNumber = 0
+    var lastOp = '+'
+    val stack = mutableListOf<Int>()
 
+    for ((i, c) in s.withIndex()) {
+        if (c.isDigit()) {
+            currentNumber = (currentNumber * 10) + c.digitToInt()
+        }
+        if (!c.isDigit() && c != ' ' || i == s.lastIndex) {
+            when (lastOp) {
+                '+' -> {
+                    stack.add(currentNumber)
+                }
+                '-' -> {
+                    stack.add(-currentNumber)
+                }
+                '*' -> {
+                    stack.add(stack.removeLast() * currentNumber)
+                }
+                '/' -> {
+                    if (currentNumber != 0) stack.add(stack.removeLast() / currentNumber)
+                }
+            }
+            lastOp = c
+            currentNumber = 0
+        }
+    }
+
+    return stack.sum()
+}
 
 
 
